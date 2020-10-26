@@ -1,42 +1,101 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta charset="utf-8">
-  <title></title>
-  <meta name="author" content="">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+        
+    <title>Family Quiz Game</title>
+    <meta name="fiewport" content="width=device-width, initial-scale=1.0">
+   
+    <style>
 
-  <style>
-  
-  #myVideo {
-      border:1px solid black
-  }
-  </style>
+        body {
+          background:yellow;
+        }
+
+        #results {
+          display:block;
+          text-align:center;
+          color:black;
+          margin-top:35%;
+        }
+
+        p#result {
+          font-size:50px;
+          color:black;
+          display:none;
+        }
+
+        #quizdiv {
+        text-align:center;
+        margin-top: 20%;
+        }
+
+        #optionsbox{
+          text-align:left;
+          display:inline-block; 
+        }
+
+       p#question {
+          font-size:28px; /*30px*/
+          text-align:center;
+          bottom:40%;
+          top: 50%;
+          font-family: Calibri, sans-serif;
+        }
+
+        p#options {
+          font-size:20px;
+        }
+
+        p#A  {
+          border:2px solid black;
+        }
+        
+        p#A, p#B, p#C, p#D, p#E {
+          font-family: Calibri, sans-serif;
+          font-size:20px;
+        }
+
+    </style>
 
 </head>
+
 <body>
 
-<button type="button" onclick="speak('howdy')">Text to speech</button>
-<iframe id="video" id="media" src="https://www.youtube.com/embed/UmaFTEIZ84?autoplay=1" width="420" height="315" frameborder="0" allowfullscreen></iframe> 
-<!---<iframe id="video" id="myVideo" src="https://www.youtube.com/embed/UmaFTEIZ84?autoplay=1" width="420" ></iframe>-->
-<iframe id="video" id="myVideo" src="https://www.youtube.com/embed/UmaFTEIZ84" width="420" height="315" frameborder="0" allowfullscreen></iframe> <!--original: https://www.youtube.com/watch?v=_UmaFTEIZ84-->
+    <h1>
+    </h1>
 
-<div id="results">
-        <p id="result" >howdy</p> 
-      </div>
+   <iframe id="video" id="media" src="https://www.youtube.com/embed/UmaFTEIZ84?autoplay=1" width="420" height="315" frameborder="0" allowfullscreen></iframe> 
+
+    <div id="quizdiv">
+      <p id="question"></p>
+        <div id="optionsbox">
+           <p id="A" class="options" onclick=checkAnswer(a)></p> <!---lowercase  -->
+           <p id="B" class="options" onclick=checkAnswer(b)></p>
+           <p id="C" class="options" onclick=checkAnswer(c)></p>
+          <p id="D" class="options" onclick=checkAnswer(d)></p>
+        </div>
+    </div>
+
+  <div id="results">
+    <p id="result"></p> 
+  </div>
+
+<audio id="yellow">
+      <source src="audio/applause2.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><!--need jquery?QQ-->
 
 <script>
 
-/*
-//works 
-setTimeout(function() {
-    document.body.style.backgroundColor = "red",
-    document.getElementById('result').textContent = "Correct!"
+if ('speechSynthesis' in window) {
+    console.log('Speech recognition is supported');
 
-}, 3000);
-*/          
+var vid=document.getElementById("myVideo");
+var media = document.querySelector("iframe");
+var gum
+var qs 
 
 function setCurTime() { 
   media.currentTime=5;
@@ -45,30 +104,7 @@ function setCurTime() {
 
 setCurTime();
 
-
-//////from here added
-function speak(text) {
-    console.log("speaking")
-    var msg = new SpeechSynthesisUtterance();
-    var voices = speechSynthesis.getVoices(); 
-    msg.voice = voices[0]; //change. 
-    //print all voices in console: speechSynthesis.getVoices()
-    console.log((msg.voice).name)
-    msg.text = text;
-    msg.lang = 'en-US';
-    msg.volume = 2; //0 to 1 (float. default:1)
-    msg.rate = 0.9; //0.1 to 10 (fastest) default:1
-    msg.pitch = 1.2; //0 to 2 (highest) default:1
-    speechSynthesis.speak(msg);
-
-    /*
-    msg.onend = function() {
-        alert("fini");
-        //runSpeechRecognition() 
-    }*/
-}
-
-const questions= [
+    const questions = [
         {
                 question: "Which school did Elon musk attend?",
                 options: {
@@ -94,7 +130,7 @@ const questions= [
                 answer:"Zeus"
               },
             
-              {
+            {
                 question: "Which Greek island is this?",
                 options: {
                   a: "Santorini",
@@ -119,76 +155,928 @@ const questions= [
                 rawanswer: "d",
                 answer:"xxx"
               },
-            
-            ]
 
-document.body.onkeyup = function(e){
-    if(e.keyCode == 32){
-       // speak("A, mow, " + "B, eatery");
+              {
+                question: "How many planets are there in our solar system?",
+                options: {
+                  a: 7,
+                  b: 8,
+                  c: 9,
+                  d: 10
+                },
+                //answer:"b",
+                rawnanswer: "b",
+                answer:"8" //string or number? QQ
+              },
+
+              {
+                question: "Is the Moon bigger than Earth?",
+                options: {
+                  a: "yes",
+                  b: "no"
+                },
+                //answer:"a",
+                rawanswer: "a",
+                anwer:"yes",
+                extra: "the Earth is around 81 times bigger than the Moon?" //?
+              },
+
+              {
+                question: "Who was the first person to go to outer space?",
+                options: {
+                  a: "Buzz Aldrin",
+                  b: "Neil Armstrong",
+                  c:"Yuri Gagarin",
+                  d: "Andriyan Nikolayev"
+                },
+                //answer:"c",
+                rawanswer:"c",
+                answer:"Yuri Gagarin"
+              },
+
+              {
+                question: "How old is President Trump?",
+                options: {
+                  a: 72,
+                  b: 75,
+                  c: 77,
+                  d: 74
+                },
+                
+                //answer:"d",
+                rawanswer:"d",
+                answer:"74" //?
+              },
+
+              {
+                question: "Which of the following was the largest empire in human history?",
+                options: {
+                  a: "Roman Empire",
+                  b: "British Empire",
+                  c: "Russian Empire",
+                  d: "Mongol Empire"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"Mongol Empire"
+              },
+
+              {
+                question: "Which of the following was the largest empire in human history?",
+                options: {
+                  a: "Roman Empire",
+                  b: "British Empire",
+                  c: "Russian Empire",
+                  d: "Mongol Empire"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"Mongol Empire"
+              },
+
+              {
+                question: "How much water should you drink per day?",
+                options: {
+                  a: "2 liters", ////
+                  b: "1.5 liters",
+                  c: "0.8 liters",
+                  d: "2.3 liters"
+                },
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:"2 liters" //number
+              },
+
+              {
+                question: "Who did not found PayPal?", //change
+                options: {
+                  a: "Elon Musk",
+                  b: "Jeff Bezos",
+                  c: "peter Thiel",
+                  d: "Yu Pan"
+                },
+                  //answer:"b",
+                  rawanswer:"b",
+                  answer:"Jeff Bezos"
+              },
+
+              {
+                question: "How tall is Mount Everest?",
+                options: {
+                  a: "10,050 meters",///
+                  b: "9,024 meters",
+                  c: "15,017 meters",
+                  d: "8,848 meters"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"8,848 meters" //numbers, space?
+              },
+
+              {
+                question: "How long is a day on Mars",
+                options: {
+                  a: "29 hours, 30 minutes",////
+                  b: "10 hours, 15 minutes ",
+                  c: "24 hours, 27 minutes",
+                  d: "24 hours, 37 minutes"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"24 hours, 37 minutes" //numbers
+              },
+
+
+              {
+                question: "Which of the following is the biggest planet in our solar system?",
+                options: {
+                  a: "Jupiter",
+                  b: "Saturn",
+                  c: "Uranus",
+                  d: "Neptune"
+                },
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:"Jupiter"    
+              },
+
+              {
+                question: "How many moons does Jupiter have?",
+                options: {
+                  a: 150,
+                  b: 40,
+                  c: 15,
+                  d: 79
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"79" //numbers 
+              },
+
+              {
+                question: "Which planet has a solid surface?",
+                options: {
+                  a: "Jupiter",
+                  b: "Saturn",
+                  c: "Uranus",
+                  d: "Neptune"
+                },
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:"Jupiter" 
+              },
+
+              {
+                question: "Donald Trump is the what number President?",
+                options: {
+                  a: "43",
+                  b: "44",
+                  c: "47",
+                  d: "45"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"45" //numbers
+              },
+
+              {
+                question: "Where is the macadamia nut originally from?",
+                options: {
+                  a: "Brazil",
+                  b: "Jamaica",
+                  c: "Hawaii",
+                  d: "Australia"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"Australia"
+              },
+
+              {
+                question: "Who invented the telephone?",
+                options: {
+                  a: "Thomas Edison",
+                  b: "Alexander Graham Bell",
+                  c: "Samuel Morse",
+                  d: "Isaac Newton"
+                },
+                  //answer:"b",
+                  rawanswer:"b",
+                  answer:"Alexander Graham Bell"
+              },
+
+              {
+                question: "Texas is the USA's biggest producer of what?",
+                options: {
+                  a: "oil, cattle, sheep, minerals, cotton, wool",
+                  b: "oil, dairy, minerals, ",///////
+                  c: "Samuel Morse",
+                  d: "Isaac Newton"
+                },
+                  //answer:"b",
+                  rawanswer:"b",
+                  answer:"oil, dairy, minerals"
+              },
+
+              {
+                question: "Which are the top three largest countries by total area?",
+                options: {
+                  a: "Russia, China, Canada",
+                  b: "Russia, USA, Canada",
+                  c: "Russia, Canada, USA",
+                  d: "Russia, Canada, Brazil"
+                },
+                  //answer:"c",
+                  rawanswer:"c",
+                  answer:"Russia, Canada, USA"
+              },
+
+              {
+                question: "Which is the world's richest country",
+                options: {
+                  a: "USA",
+                  b: "Canada",
+                  c: "Qatar",
+                  d: "Kuwait"
+                },
+                  //answer:"c",
+                  rawanswer:"c",
+                  answer:"Qatar"
+              },
+
+              {
+                question: "Which is the biggest US state by land area?",
+                options: {
+                  a: "Texas",
+                  b: "Alaska",
+                  c: "Arizona",
+                  d: "California"
+                },
+                  //answer:"b"
+                  rawanswer:"b",
+                  answer:"Alaska"
+              },
+
+              {
+                question: "Which is the world's poorest country?",
+                options: {
+                  a: "Congo",
+                  b: "Yemen",
+                  c: "Ethiopia",
+                  d: "Haiti"
+                },
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:"Congo"
+              },
+
+              {
+                question: "Which is the world's most popular holiday destination?",
+                options: {
+                  a: "China",
+                  b: "Thailand",
+                  c: "France",
+                  d: "New York"
+                },
+                  //answer:"c",
+                  rawanswer:"c",
+                  answer:"France"
+              },
+
+              {
+                question: "Which is Canada's largest city in terms of population?",
+                options: {
+                  a: "Vancouver",
+                  b: "Quebec",
+                  c: "Toronto",
+                  d: "Montreal"
+                },
+                  //answer:"b",
+                  rawanswer:"b",
+                  answer:"Quebec"
+              },
+
+              {
+                question: "Which is the most visited museum in the world?",
+                options: {
+                  a: "British Museum",
+                  b: "National Museum of China",
+                  c: "The Metropolitan Museum of Art",
+                  d: "The Louvre"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"The Louvre"
+              },
+
+              {
+                question: "Who founded Apple?", ///
+                options: {
+                  a: "Steve Jobs, Ronald Wayne, Steve Wozniak",
+                  b: "Steve Jobs, ",
+                  c: "The Metropolitan Museum of Art",
+                  d: "The Louvre"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"The Louvre"
+              },
+
+              {
+                question: "Which city has the highest population?", 
+                options: {
+                  a: "Hong Kong",
+                  b: "Mumbai",
+                  c: "Beijing",
+                  d: "Tokyo"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"Tokyo"
+              },
+
+              {
+                question: "Which is the world's biggest ocean?", 
+                options: {
+                  a: "Atlantic Ocean",
+                  b: "Pacific Ocean",
+                  c: "Indian Ocean",
+                  d: "Arctic Ocean"
+                },
+                  //answer:"b",
+                  rawanswer:"b",
+                  answer:"Pacific Ocean"
+              },
+
+
+              {
+                question: "How tall is the biggest wave recorded in history", ///
+                options: {
+                  a: "150 feet",
+                  b: "105 feet",
+                  c: "50 feet",
+                  d: "100 feet"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"100 feet" //numbers and units 
+              },
+              
+              {
+                question: "Which is the world's richest company by revenue", 
+                options: {
+                  a: "Sinopec Group",
+                  b: "Tesla",
+                  c: "Apple",
+                  d: "Walmart"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"Walmart"
+            
+              },
+
+              {
+                question: "What year was the first Olympics held in Athens, Greece", ///
+                options: {
+                  a: 1935, ////
+                  b: 1910,
+                  c: 1940,
+                  d: 1896
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"1896" // year 
+              },
+
+              {
+                question: "Which country has highest internet penetration rate", 
+                options: {
+                  a: "Indonesia",
+                  b: "USA",
+                  c: "China",
+                  d: "India"
+                },
+                  //answer:"c",
+                  rawanswer:"c",
+                  answer:"China"
+              },
+
+              {
+                question: "erer", //impact of alchohol 
+                options: {
+                  a: "Indonesia",
+                  b: "USA",
+                  c: "China",
+                  d: "India"
+                },
+                  //answer:"c",
+                  rawanswer:"c",
+                  answer:"c"
+              },
+
+              {
+                question: "When did the first computer come out?", //first computer
+                options: {
+                  a: "Indonesia",
+                  b: "USA",
+                  c: "China",
+                  d: "India"
+                },
+                  //answer:"c",
+                  rawanswer:"c",
+                  answer:"c"
+              },
+
+
+              {
+                question: "How big is the International Space Station?", //other answers
+                options: {
+                  a: "",
+                  b: "1 US football field",
+                  c: "",
+                  d: "India"
+                },
+                  //answer:"c",
+                  rawanswer:"",
+                  answer:""
+              },
+
+              {
+                question: "In which year did the first person travel to space?",
+                options: {
+                  a: "1957",
+                  b: "1945",
+                  c: "1971",
+                  d: "1961"
+                },
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"1961" //year
+              },
+
+              {
+                question: "who is the current Federal Reserve Chair?",
+                options: {
+                  a: "Jerome H. Powell",
+                  b: "Janet L. Yellen",
+                  c: "Christine Lagarde",
+                  d: "Larry Kudlow"
+                },
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:"Jerome H. Powell"
+              },
+
+              {
+                question: "When was ?",//atlantis 
+                options: {
+                  a: "Jerome H. Powell",
+                  b: "Janet L. Yellen",
+                  c: "Christine Lagarde",
+                  d: "Larry Kudlow"
+                },
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:""
+              },
+
+              {
+                question: "Who said this quote: ",//pick quote
+                options: {
+                  a: "Jerome H. Powell",
+                  b: "Janet L. Yellen",
+                  c: "Christine Lagarde",
+                  d: "Larry Kudlow"
+                },
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:""
+              },
+
+              {
+                question: "Who said this quote: ",//pick quote
+                options: {
+                  a: "Jerome H. Powell",
+                  b: "Janet L. Yellen",
+                  c: "Christine Lagarde",
+                  d: "Larry Kudlow"
+                },
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:"",
+              },
+
+              {
+                question: "Which is the world's biggest animal?",
+                options: {
+                  a: "Whale shark",
+                  b: "Blue whale",
+                  c: "Elephant",
+                  d: "Giraffe"
+                },
+                  //answer:"b",
+                  rawanswer:"b",
+                  answer:"Blue whale"
+              },
+
+              {
+                question: "How old is Kim Jong Un? faf",//fact
+                options: {
+                  a: "Jerome H. Powell",
+                  b: "Janet L. Yellen",
+                  c: "Christine Lagarde",
+                  d: "Larry Kudlow"
+                },
+                  //answer:"",
+                  rawanswer:"",
+                  answer:""
+              },
+
+              /* triple o */
+              {
+                question: "What is Jeff Bezos' net worth?",
+                options: {
+                  a: "85.2 billion USD",
+                  b: "175.3 billion USD",
+                  c: "93.7 billion USD",
+                  d: "72 billion USD"
+                },
+                  //answer:"b",
+                  rawanswer:"b",
+                  answer:"175.3 billion USD" //numbers + units 
+              },
+
+              {
+                question: "Which has highest source of Vitamin C",//
+                options: {
+                  a: "Orange",
+                  b: "Bell peppers",
+                  c: "Christine Lagarde",
+                  d: "Larry Kudlow"
+                },
+                answer:"b"
+              }, 
+
+              {
+                question: "What is benefit of vitamin C",//pick quote
+                options: {
+                  a: "Jerome H. Powell",
+                  b: "Janet L. Yellen",
+                  c: "Christine Lagarde",
+                  d: "Larry Kudlow"
+                },
+                answer:"a"
+              },
+
+              {
+                question: "Roughly how big is Seoul",
+                options: {
+                  a: "100km²",
+                  b: "930km²",
+                  c: "600km²",
+                  d: "1200km²"
+                },
+                answer:"c" //numbers
+              },
+
+              {
+                question: "Name the highest grossing Broadway show of all time",
+                options: {
+                  a: "Phantom of the Opera",
+                  b: "Mamma Mia",
+                  c: "Wicked",
+                  d: "The Lion King"
+                },
+                answer:"d"
+              },
+
+              {
+                question: "NYU",//pick quote
+                options: {
+                  a: "Phantom of the Opera",
+                  b: "Mamma Mia",
+                  c: "Wicked",
+                  d: "The Lion King"
+                },
+                answer:"d"
+              },
+
+
+              {
+                question: "NYC",//pick quote
+                options: {
+                  a: "Phantom of the Opera",
+                  b: "Mamma Mia",
+                  c: "Wicked",
+                  d: "The Lion King"
+                },
+                answer:"d"
+              },
+
+              {
+                question: "Hotchkiss",//pick quote
+                options: {
+                  a: "Phantom of the Opera",
+                  b: "Mamma Mia",
+                  c: "Wicked",
+                  d: "The Lion King"
+                },
+                answer:"d"
+              },
+
+
+              {
+                question: "Which year was Emma Willard School founded?",//change?
+                options: {
+                  a: "1805",
+                  b: "1923",
+                  c: "1850",
+                  d: "1814"
+                },
+                answer:"d"
+              },
+
+              {
+                question: "Texas is the ",//pick quote
+                options: {
+                  a: "Phantom of the Opera",
+                  b: "Mamma Mia",
+                  c: "Wicked",
+                  d: "The Lion King"
+                },
+                answer:"d"
+              },
+
+              {
+                question: "Who did not graduate from University of Texas?",//pick quote
+                options: {
+                  a: "Sandra Bullock",
+                  b: "Michael S. Dell",
+                  c: "Rex W. Tillerson",
+                  d: "Jeb Bush",
+                  e: "Neil deGras Tyson"
+                },
+                answer:"a"
+              },
+
+              {
+                question: "Who did not graduate from University of Texas?",//actor
+                options: {
+                  a: "Sandra Bullock",
+                  b: "Michael S. Dell",
+                  c: "Rex W. Tillerson",
+                  d: "Jeb Bush",
+                  e: "Neil deGras Tyson"
+                },
+                answer:"a"
+              },
+
+              {
+                question: "Who did not graduate from University of Texas?",//morning routine
+                options: {
+                  a: "Sandra Bullock",
+                  b: "Michael S. Dell",
+                  c: "Rex W. Tillerson",
+                  d: "Jeb Bush",
+                  e: "Neil deGras Tyson"
+                },
+                answer:"a"
+              },
+
+              {
+                question: "Who did not graduate from University of Texas?",//sciencs
+                options: {
+                  a: "Sandra Bullock",
+                  b: "Michael S. Dell",
+                  c: "Rex W. Tillerson",
+                  d: "Jeb Bush",
+                  e: "Neil deGras Tyson"
+                },
+                answer:"a"
+              },
+
+            ];
+            
+              speak("Welcome to the family quiz game");
+
+    function initialise() {
+      if(localStorage.getItem('qs') === null) { //if qs does not exist
+        qs = 50 //questions.length
+      } else { //if qs yes exists
+        qs = parseInt(localStorage.getItem('qs')); //returns string?
+      }
+      console.log("qs: " + qs);
+
+      gum = Math.floor(Math.random()*((qs-1) + 1)); // 0 to last index (questions length - 1)
+        console.log("gum: " + gum);
+       /*dont need */ localStorage.setItem('gum', gum.toString()); //no need toString(), auto converts # to string in localstorage. just leave
+        //even display questions?
+
+      
+        document.getElementById("question").textContent = questions[gum].question;
+        document.getElementById("A").textContent = "A) " + questions[gum].options.a;
+        document.getElementById("B").textContent = "B) " + questions[gum].options.b;
+        document.getElementById("C").textContent = "C) " + questions[gum].options.c;
+        document.getElementById("D").textContent = "D) " + questions[gum].options.d;
+
+  
        speak(questions[0].question);
        setTimeout(function() {
+
+         /* if(questions[gum].options.e {
+          speak(",A,, " + questions[0].options.a + ",B,, " + questions[0].options.b + ",C,, " + questions[0].options.c + ", D,, " + questions[0].options.d + ", E,, " + "questions[0].options.e" + "."); //what if more options
+         } else {
+          speak(",A,, " + questions[0].options.a + ",B,, " + questions[0].options.b + ",C,, " + questions[0].options.c + ", D,, " + questions[0].options.d + "."); //what if more options
+         } */
+
            speak(",A,, " + questions[0].options.a + ",B,, " + questions[0].options.b + ",C,, " + questions[0].options.c + ", D,, " + questions[0].options.d + "."); //what if more options
-       }, 2590  //",B. " ",B.," ",B..,"
+       }, 2590  //",B. " 
        );
+      
+    }
+
+    function speak(text) {
+      console.log("speaking");
+      var msg = new SpeechSynthesisUtterance();
+      var voices = speechSynthesis.getVoices(); 
+      msg.voice = voices[0];
+      msg.text = text;
+      msg.lang = 'en-US';
+      msg.volume = 2; //0 to 1 float, default:1
+      msg.rate = 0.9; //0.1 to 10 (fastest) default:1
+      msg.pitch = 1.2;//0 to 2 (highest) default:1
+      speechSynthesis.speak(msg);
+    }
+     //print all voices in console: speechSynthesis.getVoices()
+   
+    initialise();
+
+    document.body.onkeyup = function(e){
+    if(e.keyCode == 32){
+      runSpeechRecognition();
+      // initialise();
+       //function correct() 
+     // console.log("correct");
+     // document.getElementById("correct").style.display="block";
+     // document.body.style.backgroundColor = "white";
+     // document.getElementById("text").style.display="none";
        
-      // window.speechSynthesis.pause();
-       //////speak("500km");
-       //window.speechSynthesis.pause();
-       //////speak("vesuveus");
-       //window.speechSynthesis.pause();
     }
 }
 
-//msg.voiceURI = 'native'; guess delete
-//msg.text = "answer unrecognised";
-
-//speak("howdy"); 
-//speak(questions[gum].question);
-//window.speechSynthesis.pause();
-//speak(questions[gum].options.a); 
-//window.speechSynthesis.pause();
-//speak(questions[gum].options.b); 
-//window.speechSynthesis.pause();
-//speak(questions[gum].options.c);
-//speechSynthesisInstance.pause();
-//speak(questions[gum].options.d);
-//speechSynthesisInstance.pause();
-//speak(questions[gum].options.e);
+//var msg = new SpeechSynthesisUtterance();
+//msg.text = questions[gum].question;
 //speechSynthesisInstance.pause();
 
-//https://stackoverflow.com/questions/21947730/chrome-speech-synthesis-with-longer-texts
+//////////////////////////////////////////
+var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
+var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
+var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
 
-/* other option (more repetition)
-var utterance1 = new SpeechSynthesisUtterance('How about we say this now? This is quite a long sentence to say.');
-var utterance2 = new SpeechSynthesisUtterance('We should say another sentence too, just to be on the safe side.');
 
-window.speechSynthesis(utterance1);
-window.speechSynthesis(utterance2);
+function runSpeechRecognition() {
+    //console.log what say 
+    var recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    /*just for testing, delete*/ 
+    recognition.onstart=function() {
+       console.log("listening...");
+    } 
 
-window.speechSynthesis.pause()
-*/
+    recognition.onspeechend = function() {
+        recognition.stop();
+    }
 
-//original code:
-/*
-var msg = new SpeechSynthesisUtterance();
-        //msg.voice = voices[10];
+    //what if partly or units 
+    recognition.onresult = function(event) {
+        var confidence = event.results[0][0].confidence;
+        var transcript = event.results[0][0].transcript;
+        //output.innerHTML = transcript;
+        console.log(transcript);
+        console.log("confidence: " + confidence*100+'%')
+        //checkAnswer()
+        if (transcript === "Oracle") { //questions[gum].answer. type of both: string. caps sensistive?
+          //correct();
+          console.log("correct");
+          speak("Correct"); //Correct! 
+          document.getElementById("quizdiv").style.display="none";
+          document.getElementById('result').textContent = "Correct!";
+
+
+          var honey = document.getElementById("yellow"); //not exact, starts a bit after speak
+          honey.currentTime=0;
+          honey.play(); //bit delay b4 start. not 
+         
+          document.body.style.backgroundColor = "white";
+          //show some div balloons animation? QQ
+
+          console.log("questions length:" + questions.length);
+          questions.splice(gum, 1); //take away the question at that random value
+          console.log("questions length after splice:" + questions.length);
        
-        msg.text = "answer unrecognised";
-        msg.lang = 'en-US';
-        //msg.volume = 1; //o to 1
-        //msg.rate = 1; //from 0.1 to 10
-        //msg.pitch = 2; //from 0 to 2
-        window.speechSynthesis.speak(msg);
+          qs = questions.length;
 
-         //move. 
-         //after text is said aloud
-         msg.onend = function() {
-            alert("speech fini");
+          //CHANGE TO JSON WRITE WHOLE QUESTONS ARRAY TO LOCAL STORAGE SO NO FAKE LEGNTH;QQ
+          localStorage.setitem('qs', questions.length)//no need toString(), auto converts # to string in localstorage. just leave. diff than quiz game QQ
+          console.log("qs:" + parseInt(localStorage.getItem('qs'))); //check local storage = questions.length
+          return qs
+        } else if (transcript === "bus" || transcript === "cow" || transcript === "red") { //
+          // transcript === questions[gum].options.a || transcript === questions[gum].options.b || transcript === questions[gum].options.c || transcript === questions[gum].options.d) {
+          console.log("wrong answer");
+          speak("Wrong!");
+          document.getElementById('result').textContent = "Wrong!"
+          //var honey = document.getElementById("yellow");  //not exact, starts a bit after speak
+          //honey.currentTime=0;
+          //honey.play(); //bit delay b4 start
 
-        }
-*/
+          document.body.style.backgroundColor = "red"; 
+          setTimeout(function() {document.body.style.backgroundColor = "white"}, 4000);  
+          //document.getElementById("quizdiv").style.display="block"; //keep showing quiz questions
+          
+          //show some div balloons animation? 
+          
+          setTimeout(function() {
+          speak("try again"),
+          document.getElementById('result').textContent = "Try again!"
+          }, 2590
+          );
+          //return gum?
+          //runSpeechRecognition();
+        } /* else { //no need if onnomatch? QQ
+            console.log("unrecognised");
+            speak("answer unrecognized");
+            /*
+            setTimeout(function() {
+            speak("try again"); 
+            }, 2590
+            );
+        }*/
+    }
+    //show original screen
+
+    recognition.start()
+
+    //or move out and define new speechrecognition() as global
+    recognition.onnomatch = function(event) {
+        console.log("answer unrecognised");
+        speak("sorry, I didn't recognise that answer");
+        document.getElementById('result').textContent = "answer unrecognised"; //?
+        //no sound
+        //no visuals
+        //document.getElementById("quizdiv").style.display="block"; //keep showing quiz questions
+        setTimeout(function() {
+            speak("try again"),
+            document.getElementById('result').textContent = "Try again!"
+            }, 2590
+            );
+    }
+
+    recognition.onerror = function(event) {
+        console.log("error: " + event.error);
+        speak("error");
+        document.getElementById('result').textContent = "Error in reocgnition: " + event.error; //show?QQ
+        //diagnostic.textContent = "Error in recognition: " + event.error;
+        //no sound??
+        //no visuals
+        //document.getElementById("quizdiv").style.display="block"; //keep showing quiz questions
+
+        setTimeout(function() {
+            speak("try again"),
+            document.getElementById('result').textContent = "Try again!"
+            }, 2590
+            );
+            //initialise
+            //runSpeechRecognition();
+    } 
+} //runspeechrecognition bracket
+} else {
+    console.log("Speech recognition not supported");
+}
 
 </script>
-
+            
 </body>
 </html>
+          
+
+
+<!----
+var msg = new SpeechSynthesisUtterance();
+msg.text = "Correct!";
+window.speechSynthesis.speak(msg);*/
+
+ var msg = new SpeechSynthesisUtterance();
+ msg.text = "Wrong!"
+ window.speechSynthesis.speak(msg) 
+
+//display each once or none at all
+//no repeat 
+//spacebar
+
+
+ /* var msg = new SpeechSynthesisUtterance();
+ msg.text = "Correct!";
+ window.speechSynthesis.speak(msg);
+ */
+-->
