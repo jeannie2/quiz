@@ -715,7 +715,9 @@ setCurTime();
                   c: "Christine Lagarde",
                   d: "Larry Kudlow"
                 },
-                answer:"b"
+                  //answer:"b",
+                  rawanswer:"b",
+                  answer:"Bell peppers"
               }, 
 
               {
@@ -726,7 +728,9 @@ setCurTime();
                   c: "Christine Lagarde",
                   d: "Larry Kudlow"
                 },
-                answer:"a"
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:""
               },
 
               {
@@ -737,7 +741,9 @@ setCurTime();
                   c: "600km²",
                   d: "1200km²"
                 },
-                answer:"c" //numbers
+                  //answer:"c", 
+                  rawanswer:"c", 
+                  answer:"600km²" //numbers + units?
               },
 
               {
@@ -748,7 +754,9 @@ setCurTime();
                   c: "Wicked",
                   d: "The Lion King"
                 },
-                answer:"d"
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"The Lion King"
               },
 
               {
@@ -759,7 +767,9 @@ setCurTime();
                   c: "Wicked",
                   d: "The Lion King"
                 },
-                answer:"d"
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:""
               },
 
 
@@ -771,7 +781,9 @@ setCurTime();
                   c: "Wicked",
                   d: "The Lion King"
                 },
-                answer:"d"
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:""
               },
 
               {
@@ -782,7 +794,9 @@ setCurTime();
                   c: "Wicked",
                   d: "The Lion King"
                 },
-                answer:"d"
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:""
               },
 
 
@@ -794,7 +808,9 @@ setCurTime();
                   c: "1850",
                   d: "1814"
                 },
-                answer:"d"
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"1814" //year
               },
 
               {
@@ -805,7 +821,9 @@ setCurTime();
                   c: "Wicked",
                   d: "The Lion King"
                 },
-                answer:"d"
+                  //answer:"d",
+                  rawanswer:"d",
+                  answer:"d"
               },
 
               {
@@ -817,7 +835,9 @@ setCurTime();
                   d: "Jeb Bush",
                   e: "Neil deGras Tyson"
                 },
-                answer:"a"
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:"Sandra Bullock"
               },
 
               {
@@ -829,7 +849,9 @@ setCurTime();
                   d: "Jeb Bush",
                   e: "Neil deGras Tyson"
                 },
-                answer:"a"
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:"a"
               },
 
               {
@@ -841,7 +863,9 @@ setCurTime();
                   d: "Jeb Bush",
                   e: "Neil deGras Tyson"
                 },
-                answer:"a"
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:"a"
               },
 
               {
@@ -853,16 +877,48 @@ setCurTime();
                   d: "Jeb Bush",
                   e: "Neil deGras Tyson"
                 },
-                answer:"a"
+                  //answer:"a",
+                  rawanswer:"a",
+                  answer:""
               },
 
+              //Which team is the most successful in MLB history?
+              {
+                question: "Who is a famous member of the New York Yankees?",
+                options: {
+                  a: "Babe Ruth",
+                  b: "Clayton Kershaw",
+                  c: "Bily Williams",
+                  d: "Jackie Robinson"
+                },
+                  //answer: "a",
+                  rawanswer: "a",
+                  answer:"Babe Ruth"
+              },
+
+              {
+                question: "Toronto blue jays is the only franchise in Major League Baseball that plays in a city not in the USA. True or false?",
+                options: { 
+                  a: "True",
+                  b: "False"
+                },
+                  //answer:"a",
+                  rawanswer: "a",
+                  answer:"true" //or boolean?
+              }
             ];
             
-              speak("Welcome to the family quiz game");
 
-    function initialise() {
+
+              speak("Welcome to the family quiz game");
+              speak("Welcome to, the FA MI LY quiz game");
+              speak("Welcome to the family quiz game!");
+
+              loadQuiz();
+
+    function loadQuiz() { //initialise() {
       if(localStorage.getItem('qs') === null) { //if qs does not exist
-        qs = 50 //questions.length
+        qs = 50 //questions.length in case more qs
       } else { //if qs yes exists
         qs = parseInt(localStorage.getItem('qs')); //returns string?
       }
@@ -909,8 +965,7 @@ setCurTime();
       speechSynthesis.speak(msg);
     }
      //print all voices in console: speechSynthesis.getVoices()
-   
-    initialise();
+  
 
     document.body.onkeyup = function(e){
     if(e.keyCode == 32){
@@ -968,7 +1023,8 @@ function runSpeechRecognition() {
           honey.currentTime=0;
           honey.play(); //bit delay b4 start. not 
          
-          document.body.style.backgroundColor = "white";
+          document.body.style.backgroundColor = "white"; //always?
+          setTimeout(function() {document.body.style.backgroundColor = "white"}, 4000);  
           //show some div balloons animation? QQ
 
           console.log("questions length:" + questions.length);
@@ -978,8 +1034,11 @@ function runSpeechRecognition() {
           qs = questions.length;
 
           //CHANGE TO JSON WRITE WHOLE QUESTONS ARRAY TO LOCAL STORAGE SO NO FAKE LEGNTH;QQ
-          localStorage.setitem('qs', questions.length)//no need toString(), auto converts # to string in localstorage. just leave. diff than quiz game QQ
+          localStorage.setitem('qs', (questions.length).toString())//no need toString(), auto converts # to string in localstorage. just leave. diff than quiz game QQ
           console.log("qs:" + parseInt(localStorage.getItem('qs'))); //check local storage = questions.length
+
+          loadQuiz();
+
           return qs
         } else if (transcript === "bus" || transcript === "cow" || transcript === "red") { //
           // transcript === questions[gum].options.a || transcript === questions[gum].options.b || transcript === questions[gum].options.c || transcript === questions[gum].options.d) {
@@ -1035,7 +1094,9 @@ function runSpeechRecognition() {
     recognition.onerror = function(event) {
         console.log("error: " + event.error);
         speak("error");
-        document.getElementById('result').textContent = "Error in reocgnition: " + event.error; //show?QQ
+        //print out the error? QQ
+        //document.getElementById('result').textContent = "Error in reocgnition: " + event.error; 
+        //wont know, just comment out? QQ
         //diagnostic.textContent = "Error in recognition: " + event.error;
         //no sound??
         //no visuals
