@@ -908,8 +908,6 @@ setCurTime();
                   answer:"true" //or boolean?
               }
             ];
-            
-
 
               //loadQuiz();
 
@@ -981,8 +979,6 @@ window.onclick = function(){
     if(e.keyCode == 32){
     //speak('howdymate')
     runSpeechRecognition();
- document.querySelector("div#quizdiv").style.display="none";
-          document.querySelector("p#question").style.display="none"; 
      // initialise();
      //function correct() 
      // console.log("correct");
@@ -1030,8 +1026,10 @@ function runSpeechRecognition() {
           //correct();
           console.log("correct");
           speak("Correct"); //Correct! 
-          document.getElementById("quizdiv").style.display="none";
-          document.getElementById("result").style.display="block"; 
+          //document.getElementById("quizdiv").style.display="none";
+          //document.getElementById("result").style.display="block"; 
+          document.querySelector("div#quizdiv").style.display="none";
+          document.querySelector("p#question").style.display="none"; 
           document.getElementById("result").textContent = "Correct!";
 
           var honey = document.getElementById("yellow"); //not exact, starts a bit after speak
@@ -1041,7 +1039,8 @@ function runSpeechRecognition() {
           document.body.style.backgroundColor = "white"; //always?
           setTimeout(function() {document.body.style.backgroundColor = "yellow",
         
-        document.getElementById("quizdiv").style.display="block", 
+          document.querySelector("div#quizdiv").style.display="block",
+          document.querySelector("p#question").style.display="block",
         document.getElementById("result").style.display="none"
         }, 4000);  
           //show some div balloons animation? QQ
@@ -1058,28 +1057,37 @@ function runSpeechRecognition() {
 
           loadQuiz();
           //return qs
-        } else if (transcript === "bus" || transcript === "cow" || transcript === "red") { //
-          // transcript === questions[gum].options.a || transcript === questions[gum].options.b || transcript === questions[gum].options.c || transcript === questions[gum].options.d) {
+        } else if //(transcript === "bus" || transcript === "cow" || transcript === "red") { //
+          (transcript === questions[gum].options.a || transcript === questions[gum].options.b || transcript === questions[gum].options.c || transcript === questions[gum].options.d) {
           console.log("wrong answer");
           speak("Incorrect!"); //
-          speak("ooooh, better luck next time!")
-          speak("ooooh, oh ")
-          document.getElementById('result').textContent = "Wrong!";
+         // speak("ooooh, better luck next time!")
+         // speak("ooooh, oh ")
+          document.getElementById("result").textContent = "Wrong!";
+          document.querySelector("div#quizdiv").style.display="none";
+          document.querySelector("p#question").style.display="none"; 
+
           //var honey = document.getElementById("yellow");  //not exact, starts a bit after speak
           //honey.currentTime=0;
           //honey.play(); //bit delay b4 start
 
           document.body.style.backgroundColor = "red"; 
-          setTimeout(function() {document.body.style.backgroundColor = "white"}, 4000);  
+
+          setTimeout(function() {
+          speak("try again"),
+          document.getElementById('result').textContent = "Try again!"
+          }, 2590);
+
+          setTimeout(function() {document.body.style.backgroundColor = "yellow",
+          document.querySelector("div#quizdiv").style.display="none",
+          document.querySelector("p#question").style.display="block",
+          document.getElementById("result").style.display="none"
+        }, 4000);  
           //document.getElementById("quizdiv").style.display="block"; //keep showing quiz questions
           
           //show some div balloons animation? 
           
-          setTimeout(function() {
-          speak("try again"),
-          document.getElementById('result').textContent = "Try again!"
-          }, 2590
-          );
+          
           //return gum?
           //runSpeechRecognition();
         } /* else { //no need if onnomatch? QQ
@@ -1100,13 +1108,13 @@ function runSpeechRecognition() {
     recognition.onnomatch = function(event) {
         console.log("answer unrecognised");
         speak("sorry, I didn't recognise that answer");
-        document.getElementById('result').textContent = "answer unrecognised"; //?
+        document.getElementById('result').textContent = "answer unrecognised"; //? position
         //no sound
         //no visuals
         //document.getElementById("quizdiv").style.display="block"; //keep showing quiz questions
         setTimeout(function() {
             speak("try again"),
-            document.getElementById('result').textContent = "Try again!"
+            document.getElementById('result').textContent = "Try again!";
             }, 2590
             );
     }
@@ -1114,7 +1122,7 @@ function runSpeechRecognition() {
     recognition.onerror = function(event) {
         console.log("error: " + event.error);
         speak("error");
-        //print out the error? QQ
+        document.getElementById('result').textContent = "answer unrecognised"; //? position. keep QQ
         //document.getElementById('result').textContent = "Error in reocgnition: " + event.error; 
         //wont know, just comment out? QQ
         //diagnostic.textContent = "Error in recognition: " + event.error;
