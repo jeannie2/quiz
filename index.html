@@ -1026,7 +1026,7 @@ function runSpeechRecognition() {
           qs = questions.length;
 
           //CHANGE TO JSON WRITE WHOLE QUESTONS ARRAY TO LOCAL STORAGE SO NO FAKE LEGNTH;QQ
-          localStorage.setitem('qs', qs.toString())//questions.length.toString(). no need toString(), auto converts # to string in localstorage. just leave. diff than quiz game QQ
+          localStorage.setItem('qs', qs.toString())//questions.length.toString(). no need toString(), auto converts # to string in localstorage. just leave. diff than quiz game QQ
           console.log("qs:" + parseInt(localStorage.getItem('qs'))); //check local storage = questions.length
 
           var gum = loadQuiz();
