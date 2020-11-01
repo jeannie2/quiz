@@ -1034,6 +1034,7 @@ function runSpeechRecognition() {
           //document.getElementById("result").style.display="block"; 
           document.querySelector("div#quizdiv").style.display="none";
           document.querySelector("p#question").style.display="none"; 
+          document.getElementById("results").style.display = "block";
           document.getElementById("results").textContent = "Correct!";
 
           var honey = document.getElementById("yellow"); //not exact, starts a bit after speak
@@ -1071,6 +1072,7 @@ function runSpeechRecognition() {
           speak("Incorrect!"); //
          // speak("ooooh, better luck next time!")
          // speak("ooooh, oh ")
+          document.getElementById("results").style.display = "block";
           document.getElementById("results").textContent = "Wrong!";
           document.querySelector("div#quizdiv").style.display="none";
           document.querySelector("p#question").style.display="none"; 
@@ -1087,7 +1089,7 @@ function runSpeechRecognition() {
           }, 2590);
 
           setTimeout(function() {document.body.style.backgroundColor = "yellow",
-          document.querySelector("div#quizdiv").style.display="none",
+          document.querySelector("div#quizdiv").style.display="block",
           document.querySelector("p#question").style.display="block",
           document.getElementById("results").style.display="none"
         }, 4000);  
@@ -1116,6 +1118,7 @@ function runSpeechRecognition() {
     recognition.onnomatch = function(event) {
         console.log("answer unrecognised");
         speak("sorry, I didn't recognise that answer");
+        document.getElementById("results").style.display = "block"; 
         document.getElementById("results").textContent = "answer unrecognised"; //? position
         //no sound
         //no visuals
@@ -1130,6 +1133,7 @@ function runSpeechRecognition() {
     recognition.onerror = function(event) {
         console.log("error: " + event.error);
         speak("error");
+        document.getElementById("results").style.display = "block" //need?QQ
         document.getElementBydId("results").textContent = "answer unrecognised"; //? position. keep QQ
         //document.getElementById('result').textContent = "Error in reocgnition: " + event.error; 
         //wont know, just comment out? QQ
