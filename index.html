@@ -916,6 +916,7 @@ setCurTime();
       window.onload = function() {
         loadQuiz();
         speak("Welcome to the family quiz game"); 
+        //need user interaction to read quesiton?
       }
 
     function loadQuiz() { //initialise() {
@@ -934,6 +935,7 @@ setCurTime();
         //document.getElementById("quizdiv").style.display="block"; 
         //document.getElementById("result").style.display="none";
 
+        speak("wilbur");
         document.getElementById("question").textContent = questions[gum].question;
         document.getElementById("A").textContent = "A) " + questions[gum].options.a;
         document.getElementById("B").textContent = "B) " + questions[gum].options.b;
@@ -941,7 +943,7 @@ setCurTime();
         document.getElementById("D").textContent = "D) " + questions[gum].options.d;
 
        speak(questions[gum].question);
-       speak("wilbur")
+      
        setTimeout(function() {
 
          /* if(questions[gum].options.e {
@@ -979,7 +981,8 @@ window.onclick = function(){
     if(e.keyCode == 32){
     //speak('howdymate')
     runSpeechRecognition();
- 
+    document.getElementById("quizdiv").style.display="none";
+          document.getElementById("result").style.display="block"; 
      // initialise();
      //function correct() 
      // console.log("correct");
@@ -1028,7 +1031,7 @@ function runSpeechRecognition() {
           console.log("correct");
           speak("Correct"); //Correct! 
           document.getElementById("quizdiv").style.display="none";
-          document.getElementById("result").style.display="block"
+          document.getElementById("result").style.display="block"; 
           document.getElementById("result").textContent = "Correct!";
 
           var honey = document.getElementById("yellow"); //not exact, starts a bit after speak
