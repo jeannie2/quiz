@@ -68,8 +68,8 @@
 
 <iframe id="video" width="420" height="345" src="https://www.youtube.com/embed/tgbNymZ7vqY" frameborder="0" allowfullscreen>
 </iframe>
-
-   <iframe id="video" id="media" src="https://www.youtube.com/embed/UmaFTEIZ84?autoplay=1" width="420" height="315" frameborder="0" allowfullscreen></iframe> 
+<!----
+   <iframe id="video" id="media" src="https://www.youtube.com/embed/UmaFTEIZ84?autoplay=1" width="420" height="315" frameborder="0" allowfullscreen></iframe>  -->
 
     <div id="quizdiv">
       <p id="question"></p>
@@ -1034,19 +1034,14 @@ function runSpeechRecognition() {
           //document.getElementById("result").style.display="block"; 
           document.querySelector("div#quizdiv").style.display="none";
           document.querySelector("p#question").style.display="none"; 
-          document.querySelector("p#result").textContent = "Correct!";
+          document.querySelector("p#results").textContent = "Correct!";
 
           var honey = document.getElementById("yellow"); //not exact, starts a bit after speak
           honey.currentTime=0;
           honey.play(); //bit delay b4 start. not 
          
           document.body.style.backgroundColor = "white"; //always?
-          setTimeout(function() {document.body.style.backgroundColor = "yellow",
-        
-          document.querySelector("div#quizdiv").style.display="block",
-          document.querySelector("p#question").style.display="block",
-        document.querySelector("p#result").style.display="none"
-        }, 4000);  
+    
           //show some div balloons animation? QQ
 
           console.log("questions length:" + questions.length);
@@ -1055,11 +1050,20 @@ function runSpeechRecognition() {
        
           qs = questions.length;
 
+
           //CHANGE TO JSON WRITE WHOLE QUESTONS ARRAY TO LOCAL STORAGE SO NO FAKE LEGNTH;QQ
+          setTimeout(function() {document.body.style.backgroundColor = "yellow",
+        
+        document.querySelector("div#quizdiv").style.display="block",
+        document.querySelector("p#question").style.display="block",
+        document.querySelector("p#results").style.display="none"
+        
+     
           localStorage.setItem('qs', qs.toString())//questions.length.toString(). no need toString(), auto converts # to string in localstorage. just leave. diff than quiz game QQ
           console.log("qs: " + parseInt(localStorage.getItem('qs'))); //check local storage = questions.length
 
           loadQuiz();
+        }, 4000);  
           //return qs
         } else if //(transcript === "bus" || transcript === "cow" || transcript === "red") { //
           (transcript === questions[gum].options.a || transcript === questions[gum].options.b || transcript === questions[gum].options.c || transcript === questions[gum].options.d) {
@@ -1067,7 +1071,7 @@ function runSpeechRecognition() {
           speak("Incorrect!"); //
          // speak("ooooh, better luck next time!")
          // speak("ooooh, oh ")
-          document.querySelector("p#result").textContent = "Wrong!";
+          document.querySelector("p#results").textContent = "Wrong!";
           document.querySelector("div#quizdiv").style.display="none";
           document.querySelector("p#question").style.display="none"; 
 
@@ -1079,13 +1083,13 @@ function runSpeechRecognition() {
 
           setTimeout(function() {
           speak("try again"),
-          document.querySelector('p#result').textContent = "Try again!"
+          document.querySelector('p#results').textContent = "Try again!"
           }, 2590);
 
           setTimeout(function() {document.body.style.backgroundColor = "yellow",
           document.querySelector("div#quizdiv").style.display="none",
           document.querySelector("p#question").style.display="block",
-          document.querySelector("p#result").style.display="none"
+          document.querySelector("p#results").style.display="none"
         }, 4000);  
           //document.getElementById("quizdiv").style.display="block"; //keep showing quiz questions
           
