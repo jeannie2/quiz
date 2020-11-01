@@ -928,8 +928,8 @@ setCurTime();
 
       gum = Math.floor(Math.random()*((qs-1) + 1)); // 0 to last index (questions length - 1)
         console.log("gum: " + gum);
-       /*dont need */ localStorage.setItem('gum', gum.toString()); //no need toString(), auto converts # to string in localstorage. just leave
-        //even display questions?
+       /*dont need ?  localStorage.setItem('gum', gum.toString()); //no need toString(), auto converts # to string in localstorage. just leave
+        //even display questions?*/
 
         document.getElementById("question").textContent = questions[gum].question;
         document.getElementById("A").textContent = "A) " + questions[gum].options.a;
@@ -937,7 +937,6 @@ setCurTime();
         document.getElementById("C").textContent = "C) " + questions[gum].options.c;
         document.getElementById("D").textContent = "D) " + questions[gum].options.d;
 
-  
        speak(questions[gum].question);
        setTimeout(function() {
 
@@ -950,9 +949,7 @@ setCurTime();
            speak(",A,, " + questions[gum].options.a + ",B,, " + questions[gum].options.b + ",C,, " + questions[gum].options.c + ", D,, " + questions[gum].options.d + "."); //what if more options
        }, 2590  //",B. " 
        );
-
-      return gum;
-      
+      //return gum;
     }
 
     function speak(text) {
