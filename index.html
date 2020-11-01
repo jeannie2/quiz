@@ -1114,6 +1114,8 @@ function runSpeechRecognition() {
 
     recognition.start()
 
+    //QQ prevent speak b4 questions load? or press other keys while things in operation?
+
     //or move out and define new speechrecognition() as global
     recognition.onnomatch = function(event) {
         console.log("answer unrecognised");
@@ -1134,7 +1136,7 @@ function runSpeechRecognition() {
         console.log("error: " + event.error);
         speak("error");
         document.getElementById("results").style.display = "block" //need?QQ
-        document.getElementBydId("results").textContent = "answer unrecognised"; //? position. keep QQ
+        document.getElementById("results").textContent = "answer unrecognised"; //? position. keep QQ
         //document.getElementById('result').textContent = "Error in reocgnition: " + event.error; 
         //wont know, just comment out? QQ
         //diagnostic.textContent = "Error in recognition: " + event.error;
