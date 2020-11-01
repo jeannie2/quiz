@@ -65,6 +65,10 @@
     <h1>
     </h1>
 
+
+<iframe id="video" width="420" height="345" src="https://www.youtube.com/embed/tgbNymZ7vqY" frameborder="0" allowfullscreen>
+</iframe>
+
    <iframe id="video" id="media" src="https://www.youtube.com/embed/UmaFTEIZ84?autoplay=1" width="420" height="315" frameborder="0" allowfullscreen></iframe> 
 
     <div id="quizdiv">
@@ -1030,7 +1034,7 @@ function runSpeechRecognition() {
           //document.getElementById("result").style.display="block"; 
           document.querySelector("div#quizdiv").style.display="none";
           document.querySelector("p#question").style.display="none"; 
-          document.getElementById("result").textContent = "Correct!";
+          document.querySelector("p#result").textContent = "Correct!";
 
           var honey = document.getElementById("yellow"); //not exact, starts a bit after speak
           honey.currentTime=0;
@@ -1041,7 +1045,7 @@ function runSpeechRecognition() {
         
           document.querySelector("div#quizdiv").style.display="block",
           document.querySelector("p#question").style.display="block",
-        document.getElementById("result").style.display="none"
+        document.querySelector("p#result").style.display="none"
         }, 4000);  
           //show some div balloons animation? QQ
 
@@ -1063,7 +1067,7 @@ function runSpeechRecognition() {
           speak("Incorrect!"); //
          // speak("ooooh, better luck next time!")
          // speak("ooooh, oh ")
-          document.getElementById("result").textContent = "Wrong!";
+          document.querySelector("p#result").textContent = "Wrong!";
           document.querySelector("div#quizdiv").style.display="none";
           document.querySelector("p#question").style.display="none"; 
 
@@ -1075,13 +1079,13 @@ function runSpeechRecognition() {
 
           setTimeout(function() {
           speak("try again"),
-          document.getElementById('result').textContent = "Try again!"
+          document.querySelector('p#result').textContent = "Try again!"
           }, 2590);
 
           setTimeout(function() {document.body.style.backgroundColor = "yellow",
           document.querySelector("div#quizdiv").style.display="none",
           document.querySelector("p#question").style.display="block",
-          document.getElementById("result").style.display="none"
+          document.querySelector("p#result").style.display="none"
         }, 4000);  
           //document.getElementById("quizdiv").style.display="block"; //keep showing quiz questions
           
@@ -1108,7 +1112,7 @@ function runSpeechRecognition() {
     recognition.onnomatch = function(event) {
         console.log("answer unrecognised");
         speak("sorry, I didn't recognise that answer");
-        document.getElementById('result').textContent = "answer unrecognised"; //? position
+        document.querySelector('p#result').textContent = "answer unrecognised"; //? position
         //no sound
         //no visuals
         //document.getElementById("quizdiv").style.display="block"; //keep showing quiz questions
@@ -1122,7 +1126,7 @@ function runSpeechRecognition() {
     recognition.onerror = function(event) {
         console.log("error: " + event.error);
         speak("error");
-        document.getElementById('result').textContent = "answer unrecognised"; //? position. keep QQ
+        document.querySelector('p#result').textContent = "answer unrecognised"; //? position. keep QQ
         //document.getElementById('result').textContent = "Error in reocgnition: " + event.error; 
         //wont know, just comment out? QQ
         //diagnostic.textContent = "Error in recognition: " + event.error;
@@ -1132,7 +1136,7 @@ function runSpeechRecognition() {
 
         setTimeout(function() {
             speak("try again"),
-            document.getElementById('result').textContent = "Try again!"
+            document.querySelector('p#result').textContent = "Try again!"
             }, 2590
             );
             //initialise
